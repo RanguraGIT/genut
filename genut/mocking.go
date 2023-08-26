@@ -13,17 +13,14 @@ import (
 	"github.com/RanguraGIT/genut/helper/checker"
 )
 
-var (
-	skip     []string
-	process  []string
-	others   bool
-	mockDir  string
-	mockName string
-	isMicro  bool
-)
-
 // function to generate mockgen
 func GenMockgen() {
+	var (
+		skip    []string
+		process []string
+		others  bool
+	)
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		fmt.Println("Error wd:", err)
@@ -31,7 +28,6 @@ func GenMockgen() {
 	}
 
 	skip, process, others = config.NewDirectoriesConfig(cwd).LoadConfig()
-	isMicro = false
 
 	err = filepath.Walk(cwd, func(path string, info os.FileInfo, walkerr error) error {
 		if walkerr != nil {
@@ -44,11 +40,11 @@ func GenMockgen() {
 			}
 		} else {
 			if helper.NewContainsConfig(process, path).ContainsAny() && strings.HasSuffix(info.Name(), ".go") && helper.NewInterfaceConfig(path).Contains() {
-				if err := generateMockForInterface(path, cwd); err != nil {
+				if err := generateMockForInterface(path, cwd, skip, process, others); err != nil {
 					return err
 				}
 			} else if others && strings.HasSuffix(info.Name(), ".go") && helper.NewInterfaceConfig(path).Contains() {
-				if err := generateMockForInterface(path, cwd); err != nil {
+				if err := generateMockForInterface(path, cwd, skip, process, others); err != nil {
 					return err
 				}
 			}
@@ -63,7 +59,9 @@ func GenMockgen() {
 }
 
 // function to generate mock for interface
-func generateMockForInterface(origin string, root string) error {
+func generateMockForInterface(origin string, root string, skip []string, process []string, others bool) error {
+	var mockDir string
+
 	if !checker.Mockgen() {
 		cmd := exec.Command("go", "install", "github.com/golang/mock/mockgen")
 		out, err := cmd.CombinedOutput()
@@ -82,11 +80,10 @@ func generateMockForInterface(origin string, root string) error {
 	packages := helper.NewContainsConfig(process, microservicePath).GetDir()
 
 	if microservice == "services" {
-		isMicro = true
 		microservice = strings.Split(microservicePath, string(os.PathSeparator))[1]
-		mockDir = helper.NewMockDirectoryConfig(root).GetMockMicroDir(packages, microservice, others)
+		mockDir = helper.NewMockDirectoryConfig(root, skip).GetMockMicroDir(packages, microservice, others)
 	} else {
-		mockDir = helper.NewMockDirectoryConfig(root).GetMockDir(skip, packages, microservice, others)
+		mockDir = helper.NewMockDirectoryConfig(root, skip).GetMockDir(packages, microservice, others)
 	}
 
 	fileBase := filepath.Base(origin)

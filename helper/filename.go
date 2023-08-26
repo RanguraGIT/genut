@@ -30,5 +30,6 @@ func (c *filename_config) Generate() string {
 	}
 
 	file := strings.ReplaceAll(mockName, string(os.PathSeparator), "_")
-	return file[1:]
+	fileName := strings.TrimSuffix(file, ".go")
+	return fileName[1:]
 }

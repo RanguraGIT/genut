@@ -62,3 +62,38 @@ func (c *directories_config) LoadConfig() (skip []string, process []string, othe
 
 	return c.Directories.Skip, c.Directories.Process, others
 }
+
+// function to check and load the config file
+func (c *directories_config) LoadMockConfig() (skip []string, process []string, others bool) {
+	skipped := make([]string, 0, len(c.Directories.Skip))
+	for _, s := range c.Directories.Skip {
+		if s != "mocks" {
+			skipped = append(skipped, s)
+		}
+	}
+	c.Directories.Skip = skipped
+
+	c.Directories.Process = []string{"mocks"}
+
+	others = false
+	if c.Directories.Others {
+		others = c.Directories.Others
+	}
+
+	return c.Directories.Skip, c.Directories.Process, others
+}
+
+// function to get the skip directories
+func (c *directories_config) GetSkip() []string {
+	return c.Directories.Skip
+}
+
+// function to get the process directories
+func (c *directories_config) GetProcess() []string {
+	return c.Directories.Process
+}
+
+// function to get the others directories
+func (c *directories_config) GetOthers() bool {
+	return c.Directories.Others
+}

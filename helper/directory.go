@@ -8,6 +8,7 @@ import (
 
 type mock_directory_config struct {
 	path string
+	skip []string
 }
 
 var (
@@ -15,10 +16,28 @@ var (
 	walker  string
 )
 
-func NewMockDirectoryConfig(path string) *mock_directory_config {
+func NewMockDirectoryConfig(path string, skip []string) *mock_directory_config {
 	return &mock_directory_config{
 		path: path,
+		skip: skip,
 	}
+}
+
+func (m *mock_directory_config) setWalker(target string) {
+	filepath.Walk(m.path, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			if NewContainsConfig(m.skip, info.Name()).Contains() {
+				return filepath.SkipDir
+			} else if info.Name() == target {
+				walker = path
+			}
+		}
+		return nil
+	})
 }
 
 func (m *mock_directory_config) GetMockMicroDir(packages string, microservice string, others bool) string {
@@ -30,7 +49,7 @@ func (m *mock_directory_config) GetMockMicroDir(packages string, microservice st
 	case "repository":
 		mockDir = filepath.Join("services", microservice, "internal", "repository", "mocks")
 	case "pkg":
-		mockDir = filepath.Join(microservice, "mocks")
+		mockDir = filepath.Join("pkg", "mocks")
 	case "others":
 		if others {
 			mockDir = filepath.Join("services", microservice, "internal", "others", "mocks")
@@ -38,27 +57,11 @@ func (m *mock_directory_config) GetMockMicroDir(packages string, microservice st
 			fmt.Println(m.path, "is not in the process directory.")
 		}
 	}
-
 	return mockDir
 }
 
-func (m *mock_directory_config) GetMockDir(skip []string, packages string, microservice string, others bool) string {
-	filepath.Walk(m.path, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			if NewContainsConfig(skip, info.Name()).Contains() {
-				return filepath.SkipDir
-			} else if info.Name() == "internal" {
-				walker = path
-			}
-		}
-
-		return nil
-	})
-
+func (m *mock_directory_config) GetMockDir(packages string, microservice string, others bool) string {
+	m.setWalker("internal")
 	switch packages {
 	case "infrastructure":
 		mockDir = filepath.Join(walker, "infrastructure", "mocks")
@@ -67,7 +70,7 @@ func (m *mock_directory_config) GetMockDir(skip []string, packages string, micro
 	case "repository":
 		mockDir = filepath.Join(walker, "repository", "mocks")
 	case "pkg":
-		mockDir = filepath.Join(walker, "mocks")
+		mockDir = filepath.Join("pkg", "mocks")
 	case "others":
 		if others {
 			mockDir = filepath.Join(walker, "others", "mocks")
@@ -75,6 +78,5 @@ func (m *mock_directory_config) GetMockDir(skip []string, packages string, micro
 			fmt.Println(m.path, "is not in the process directory.")
 		}
 	}
-
 	return mockDir
 }
