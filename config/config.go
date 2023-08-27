@@ -23,7 +23,7 @@ var (
 	others  bool
 )
 
-func NewDirectoriesConfig(path string) *directories_config {
+func NewConfig(path string) *directories_config {
 	configFile, err := os.Open(filepath.Join(path, ".genut.yml"))
 	if err != nil {
 		return &directories_config{

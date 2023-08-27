@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RanguraGIT/genut/genut"
+	mocking "github.com/RanguraGIT/genut/genut/mocks"
 	"github.com/spf13/cobra"
 )
 
@@ -18,19 +18,14 @@ func main() {
 		Use:   "generate",
 		Short: "Generate code",
 		Run: func(cmd *cobra.Command, args []string) {
-			mock, _ := cmd.Flags().GetBool("mocking")
-			wrap, _ := cmd.Flags().GetBool("wrapper")
+			mock, _ := cmd.Flags().GetBool("mocks")
 
 			if mock {
-				genut.GenMockgen()
+				mocking.GenMockgen()
 			}
 
-			if wrap {
-				genut.GenWrapper()
-			}
-
-			if !mock && !wrap {
-				fmt.Println("No actions selected. Use --mocking and/or --wrapper.")
+			if !mock {
+				fmt.Println("No actions selected. Use --mocks.")
 			}
 		},
 	}
