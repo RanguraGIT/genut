@@ -32,7 +32,6 @@ func main() {
 
 	// Add flags to the generate command
 	generateCmd.Flags().Bool("mocking", false, "Generate mockgen")
-	generateCmd.Flags().Bool("wrapper", false, "Generate wrapper")
 
 	rootCmd.AddCommand(generateCmd)
 
