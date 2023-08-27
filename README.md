@@ -29,7 +29,6 @@ genut generate [flags]
 Available flags:
 
 - `--mocking`: Generate mockgen mocks.
-- `--wrapper`: Generate wrappers.
 
 Example:
 
