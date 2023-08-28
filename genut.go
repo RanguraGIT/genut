@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	mocking "github.com/RanguraGIT/genut/genut/mocks"
+	mocks "github.com/RanguraGIT/genut/genut/mocks"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,7 @@ func main() {
 			mock, _ := cmd.Flags().GetBool("mocks")
 
 			if mock {
-				mocking.GenMockgen()
+				mocks.GenMockgen()
 			}
 
 			if !mock {
@@ -31,7 +31,7 @@ func main() {
 	}
 
 	// Add flags to the generate command
-	generateCmd.Flags().Bool("mocking", false, "Generate mockgen")
+	generateCmd.Flags().Bool("mocks", false, "Generate mockgen")
 
 	rootCmd.AddCommand(generateCmd)
 

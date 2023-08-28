@@ -17,10 +17,7 @@ type directories_config struct {
 }
 
 var (
-	con     directories_config
-	skip    []string
-	process []string
-	others  bool
+	con directories_config
 )
 
 func NewConfig(path string) *directories_config {
@@ -32,7 +29,7 @@ func NewConfig(path string) *directories_config {
 				Process []string "yaml:\"process\""
 				Others  bool     "yaml:\"others,omitempty\""
 			}{
-				Skip:    []string{"vendor", "mocks"},
+				Skip:    []string{"vendor", "mocks", "utils", "helpers"},
 				Process: []string{"service", "repository", "usecase", "repository", "pkg", "infrastructure"},
 				Others:  false,
 			},

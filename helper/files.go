@@ -11,8 +11,6 @@ import (
 	"strings"
 
 	"github.com/RanguraGIT/genut/config"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 )
 
 type file_config struct {
@@ -82,7 +80,7 @@ func (c *file_config) GenWrapperFile(packet string, waobj map[string]string) err
 		mockdir = dir.GetMockDirectory(packet, service, con.GetOthers(), false)
 	}
 
-	packet = cases.Title(language.English).String(packet)
+	packet = "Wrapper"
 	dirs := filepath.Join(mockdir, "wrapper.go")
 	wrapperFile, err := os.Create(dirs)
 	if err != nil {
