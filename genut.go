@@ -12,7 +12,7 @@ import (
 func main() {
 	var rootCmd = &cobra.Command{
 		Use:   "genut",
-		Short: "Genut is a tool to ease DG project dev sec ops",
+		Short: "Genut is a tool to ease DG project devsecops",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			configFlag, _ := cmd.Flags().GetBool("config")
 			versionFlag, _ := cmd.Flags().GetBool("version")
@@ -34,7 +34,7 @@ func main() {
 
 	var createCmd = &cobra.Command{
 		Use:   "create",
-		Short: "tCreate new project",
+		Short: "Generate new project",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("Cooming soon")
 		},
@@ -44,7 +44,7 @@ func main() {
 
 	var installCmd = &cobra.Command{
 		Use:   "install",
-		Short: "Install new service",
+		Short: "Add new service to project",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("Cooming soon")
 		},
@@ -54,7 +54,7 @@ func main() {
 
 	var mockCmd = &cobra.Command{
 		Use:   "mocks",
-		Short: "Generate code",
+		Short: "Generate mocks from available interface",
 		Run: func(cmd *cobra.Command, args []string) {
 			mocks.GenMockgen()
 		},
@@ -84,16 +84,16 @@ func help() {
 	fmt.Println("  Genut is a tool to ease DG project devsecops")
 	fmt.Println()
 	fmt.Println("Usage:")
-	fmt.Println("  genut [command / flags]")
+	fmt.Println("  genut [command/flags]")
 	fmt.Println()
 	fmt.Println("Available Flags:")
 	fmt.Println("  --config   -c\t\tGenerate config file to root project")
 	fmt.Println("  --version  -v\t\tPrint the version number of Genut")
 	fmt.Println()
 	fmt.Println("Available Commands:")
-	fmt.Println("  create  [project]\tCreate new project")
-	fmt.Println("  install [service]\tCreate new service")
-	fmt.Println("  mocks\t\t\tGenerate mocks")
+	fmt.Println("  create  [project]\tGenerate new project")
+	fmt.Println("  install [service]\tAdd new service to project")
+	fmt.Println("  mocks\t\t\tGenerate mocks from available interface")
 	fmt.Println("  pre-commit\t\tInstalling pre-commit configuration")
 	fmt.Println()
 }
