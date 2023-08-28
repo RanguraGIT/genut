@@ -13,46 +13,87 @@ func main() {
 	var rootCmd = &cobra.Command{
 		Use:   "genut",
 		Short: "Genut is a tool to ease DG project dev sec ops",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			configFlag, _ := cmd.Flags().GetBool("config")
+			versionFlag, _ := cmd.Flags().GetBool("version")
+
+			if versionFlag {
+				fmt.Println("Genut v1.0.0")
+			} else if configFlag {
+				helper.GenConfig()
+			} else {
+				help()
+			}
+
+			return nil
+		},
 	}
 
-	var generateCmd = &cobra.Command{
-		Use:   "generate",
+	rootCmd.PersistentFlags().BoolP("config", "c", false, "Generate config file to root project")
+	rootCmd.PersistentFlags().BoolP("version", "v", false, "Print the version of Genut")
+
+	var createCmd = &cobra.Command{
+		Use:   "create",
+		Short: "tCreate new project",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("Cooming soon")
+		},
+	}
+
+	rootCmd.AddCommand(createCmd)
+
+	var installCmd = &cobra.Command{
+		Use:   "install",
+		Short: "Install new service",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("Cooming soon")
+		},
+	}
+
+	rootCmd.AddCommand(installCmd)
+
+	var mockCmd = &cobra.Command{
+		Use:   "mocks",
 		Short: "Generate code",
 		Run: func(cmd *cobra.Command, args []string) {
-			mock, _ := cmd.Flags().GetBool("mocks")
-			conf, _ := cmd.Flags().GetBool("config")
-
-			if mock {
-				mocks.GenMockgen()
-			}
-
-			if conf {
-				helper.GenConfig()
-			}
-
-			if !mock && !conf {
-				fmt.Println("No actions selected. Use --mocks and/or --config.")
-			}
+			mocks.GenMockgen()
 		},
 	}
 
-	var versionCmd = &cobra.Command{
-		Use:   "version",
-		Short: "Print the version number of MyApp",
+	rootCmd.AddCommand(mockCmd)
+
+	var preCommitCmd = &cobra.Command{
+		Use:   "pre-commit",
+		Short: "Installing pre-commit configuration",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Version 1.0")
+			fmt.Println("Cooming soon")
 		},
 	}
 
-	// Add flags to the generate command
-	generateCmd.Flags().Bool("mocks", false, "Generate mockgen")
-	generateCmd.Flags().Bool("config", false, "Generate config file")
-
-	rootCmd.AddCommand(generateCmd)
-	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(preCommitCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func help() {
+	fmt.Println()
+	fmt.Println("Description:")
+	fmt.Println("  Genut is a tool to ease DG project devsecops")
+	fmt.Println()
+	fmt.Println("Usage:")
+	fmt.Println("  genut [command / flags]")
+	fmt.Println()
+	fmt.Println("Available Flags:")
+	fmt.Println("  --config   -c\t\tGenerate config file to root project")
+	fmt.Println("  --version  -v\t\tPrint the version number of Genut")
+	fmt.Println()
+	fmt.Println("Available Commands:")
+	fmt.Println("  create  [project]\tCreate new project")
+	fmt.Println("  install [service]\tCreate new service")
+	fmt.Println("  mocks\t\t\tGenerate mocks")
+	fmt.Println("  pre-commit\t\tInstalling pre-commit configuration")
+	fmt.Println()
 }

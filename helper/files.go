@@ -54,6 +54,8 @@ func GenConfig() bool {
 	file.WriteString(" # Others is used for processing folder who want to generate\n")
 	file.WriteString(" others: false\n")
 
+	fmt.Println("Config file has been generated")
+
 	return true
 }
 
