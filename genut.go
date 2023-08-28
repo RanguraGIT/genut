@@ -36,11 +36,20 @@ func main() {
 		},
 	}
 
+	var versionCmd = &cobra.Command{
+		Use:   "version",
+		Short: "Print the version number of MyApp",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("Version 1.0")
+		},
+	}
+
 	// Add flags to the generate command
 	generateCmd.Flags().Bool("mocks", false, "Generate mockgen")
 	generateCmd.Flags().Bool("config", false, "Generate config file")
 
 	rootCmd.AddCommand(generateCmd)
+	rootCmd.AddCommand(versionCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
