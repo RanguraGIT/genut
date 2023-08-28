@@ -24,12 +24,15 @@ The tool comes with a command-line interface to execute its functionalities.
 The generate command allows you to trigger various code generation actions, such as generating mocks and wrappers.
 
 ```bash
-genut generate [flags]
+genut [command] [flags]
 
 ```
 
-Available flags:
+Available command:
+- version
+- generate
 
+Availabel generate flags:
 - `--config`    : Generate config for genut.
 - `--mocks`     : Generate mockgen mocks.
 
