@@ -4,18 +4,15 @@ Genut is a tool designed to simplify development, security, and operations tasks
 
 ## Overview
 
-This tool provides functionalities for generating automatically generated mocks using `mockgen` and wrapping files as needed. It is built using the Go programming language and the [Cobra](https://github.com/spf13/cobra) library for creating command-line interfaces.
+This tool provides functionalities for generating automatically generated mocks using `mockgen` and wrapping files as needed. It is built using the Go programming language.
 
 ## Installation
 
 To install `genut`, you need to have Go installed on your machine. You can then use the following command:
 
 ```bash
-go get -u github.com/RanguraGIT/genut
-```
-or
-```bash
 go install github.com/RanguraGIT/genut@latest
+
 ```
 
 # Usage
@@ -28,21 +25,18 @@ The generate command allows you to trigger various code generation actions, such
 
 ```bash
 genut generate [flags]
+
 ```
 
 Available flags:
 
-- `--mocks`: Generate mockgen mocks.
-
-Example:
-
-```bash
-genut generate --mocks
-```
-This will generate mockgen mocks based on the configurations interface provided.
+- `--config`    : Generate config for genut.
+- `--mocks`     : Generate mockgen mocks.
 
 # Contributing
+
 Contributions are welcome! If you have suggestions, bug reports, or feature requests, please open an issue or a pull request in this repository.
 
 # License
+
 This project is licensed under the MIT License.

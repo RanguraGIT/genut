@@ -5,6 +5,7 @@ import (
 	"os"
 
 	mocks "github.com/RanguraGIT/genut/genut/mocks"
+	"github.com/RanguraGIT/genut/helper"
 	"github.com/spf13/cobra"
 )
 
@@ -19,19 +20,25 @@ func main() {
 		Short: "Generate code",
 		Run: func(cmd *cobra.Command, args []string) {
 			mock, _ := cmd.Flags().GetBool("mocks")
+			conf, _ := cmd.Flags().GetBool("config")
 
 			if mock {
 				mocks.GenMockgen()
 			}
 
-			if !mock {
-				fmt.Println("No actions selected. Use --mocks.")
+			if conf {
+				helper.GenConfig()
+			}
+
+			if !mock && !conf {
+				fmt.Println("No actions selected. Use --mocks and/or --config.")
 			}
 		},
 	}
 
 	// Add flags to the generate command
 	generateCmd.Flags().Bool("mocks", false, "Generate mockgen")
+	generateCmd.Flags().Bool("config", false, "Generate config file")
 
 	rootCmd.AddCommand(generateCmd)
 

@@ -30,7 +30,7 @@ func NewConfig(path string) *directories_config {
 				Others  bool     "yaml:\"others,omitempty\""
 			}{
 				Skip:    []string{"vendor", "mocks", "utils", "helpers"},
-				Process: []string{"service", "repository", "usecase", "repository", "pkg", "infrastructure"},
+				Process: []string{"service", "repository", "usecase", "pkg", "infrastructure"},
 				Others:  false,
 			},
 		}

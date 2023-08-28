@@ -26,6 +26,37 @@ func NewFileConfig(workingtable string, filePath string) *file_config {
 	}
 }
 
+// function to check if file exist
+func GenConfig() bool {
+	wd, _ := Worktable()
+	files := filepath.Join(wd, ".genut.yml")
+	file, err := os.Create(files)
+	if err != nil {
+		return false
+	}
+
+	defer file.Close()
+
+	file.WriteString("directories:\n")
+	file.WriteString(" # Skip is used for skiping folder who didn't want to generate\n")
+	file.WriteString(" skip:\n")
+	file.WriteString("  - vendor\n")
+	file.WriteString("  - mocks\n")
+	file.WriteString("  - utils\n")
+	file.WriteString("  - helpers\n")
+	file.WriteString(" # Process is used for processing folder who want to generate\n")
+	file.WriteString(" process:\n")
+	file.WriteString("  - service\n")
+	file.WriteString("  - repository\n")
+	file.WriteString("  - usecase\n")
+	file.WriteString("  - pkg\n")
+	file.WriteString("  - infrastructure\n")
+	file.WriteString(" # Others is used for processing folder who want to generate\n")
+	file.WriteString(" others: false\n")
+
+	return true
+}
+
 // function to check if the file contains an interface
 func (c *file_config) IsContain() bool {
 	fset := token.NewFileSet()
@@ -68,16 +99,17 @@ func (c *file_config) GenFilename(files string, packages string) string {
 
 // function to generate wrapper file
 func (c *file_config) GenWrapperFile(packet string, waobj map[string]string) error {
-	con := config.NewConfig(c.workingtable)
-	dir := NewDirectoryConfig(c.workingtable, con.GetSkip(), con.GetProcess())
+	skip, process, others := config.NewConfig(c.workingtable).LoadConfig()
+	dir := NewDirectoryConfig(c.workingtable, skip, process)
+
 	workdir := dir.GetPath(c.filePath, "workdir")
 	service := dir.GetPath(c.filePath, "service")
 
 	if service == "services" {
 		service = strings.Split(workdir, string(os.PathSeparator))[1]
-		mockdir = dir.GetMockDirectory(packet, service, con.GetOthers(), true)
+		mockdir = dir.GetMockDirectory(packet, service, others, true)
 	} else {
-		mockdir = dir.GetMockDirectory(packet, service, con.GetOthers(), false)
+		mockdir = dir.GetMockDirectory(packet, service, others, false)
 	}
 
 	packet = "Wrapper"
@@ -105,8 +137,6 @@ func (c *file_config) GenWrapperFile(packet string, waobj map[string]string) err
 	}
 
 	wrapperFile.WriteString("\t}\n}\n")
-
-	fmt.Println(dirs)
 	return nil
 }
 

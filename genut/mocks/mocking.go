@@ -101,6 +101,7 @@ func GenMockgen() {
 		fmt.Println("Walk Error:", walkErr)
 	}
 
+	fmt.Println()
 	err := GenWrapper()
 
 	if err != nil {
@@ -176,7 +177,6 @@ func GenWrapper() error {
 
 // function to generate wrapper content
 func (w *wrapper) genWrapperContent(path string) error {
-	fmt.Printf("Wrapper generated for:\n")
 
 	files := helper.NewFileConfig(w.workingtable, path)
 	process := config.NewConfig(wt()).GetProcess()
@@ -186,9 +186,9 @@ func (w *wrapper) genWrapperContent(path string) error {
 		wrtemp = packages
 	}
 
-	if wrtemp != packages || wrobj == nil {
-		wrobj = make(map[string]string)
+	if wrtemp != packages {
 		wrtemp = packages
+		wrobj = make(map[string]string)
 	}
 
 	structs, structsErr := files.GetStruct(path)
@@ -198,10 +198,12 @@ func (w *wrapper) genWrapperContent(path string) error {
 
 	wrobj[structs] = packages
 
-	// function to generate wrapper file
-	fileErr := files.GenWrapperFile(packages, wrobj)
-	if fileErr != nil {
-		return fileErr
+	if packages != "" {
+		fileErr := files.GenWrapperFile(packages, wrobj)
+		if fileErr != nil {
+			return fileErr
+		}
 	}
+
 	return nil
 }
