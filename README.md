@@ -15,7 +15,7 @@ go get -u github.com/RanguraGIT/genut
 ```
 or
 ```bash
-go isntall github.com/RanguraGIT/genut@latest
+go install github.com/RanguraGIT/genut@latest
 ```
 
 # Usage
