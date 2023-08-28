@@ -19,22 +19,40 @@ go install github.com/RanguraGIT/genut@latest
 
 The tool comes with a command-line interface to execute its functionalities.
 
-# Generate Command
+## Generate Command
 
 The generate command allows you to trigger various code generation actions, such as generating mocks and wrappers.
 
 ```bash
-genut [command] [flags]
+genut [command/flags]
 
 ```
+Available `genut` *flags*:
+- --config or -c       
+*Generate config file to root project*
+- --version or -v      
+*Print the version number of Genut*
 
-Available command:
-- version
-- generate
+Available `genut` *command*:
+- create  *"project name"*    
+*Generate new project*
+- install *"service name"*  
+*Add new service to project*
+- mocks  
+*Generate mocks from available interface*
+- pre-commit  
+*Installing pre-commit configuration*
 
-Availabel generate flags:
-- `--config`    : Generate config for genut.
-- `--mocks`     : Generate mockgen mocks.
+
+Example:
+```bash
+# For generating genut config to root project
+genut --config
+# For Generate mocks from available interface
+genut mocks
+# For Installing pre-commit configuration
+genut pre-commit
+```
 
 # Contributing
 
