@@ -28,12 +28,12 @@ genut generate [flags]
 
 Available flags:
 
-- `--mocking`: Generate mockgen mocks.
+- `--mocks`: Generate mockgen mocks.
 
 Example:
 
 ```bash
-genut generate --mocking
+genut generate --mocks
 ```
 This will generate mockgen mocks based on the configurations interface provided.
 
