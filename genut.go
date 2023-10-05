@@ -5,6 +5,7 @@ import (
 	"os"
 
 	mocks "github.com/RanguraGIT/genut/genut/mocks"
+	"github.com/RanguraGIT/genut/genut/project"
 	"github.com/RanguraGIT/genut/helper"
 	"github.com/spf13/cobra"
 )
@@ -35,8 +36,23 @@ func main() {
 	var createCmd = &cobra.Command{
 		Use:   "create",
 		Short: "Generate new project",
+		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Cooming soon")
+			if len(args) != 3 {
+				fmt.Println()
+				fmt.Println("Error:")
+				fmt.Println("  Missing required argument")
+				fmt.Println()
+				fmt.Println("Usage:")
+				fmt.Println("  genut create [project] [service] [go version]")
+				fmt.Println()
+				return
+			}
+
+			projects := args[0]
+			services := args[1]
+			version := args[2]
+			project.NewProjectConfig(projects, services, version).Create()
 		},
 	}
 
